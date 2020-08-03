@@ -15,6 +15,8 @@ import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
 
 storiesOf("Button", module)
   .addParameters({
@@ -134,6 +136,8 @@ storiesOf("InterviewerList", module)
 
 const student = "Lydia Miller-Jones";
 const confirmString = "Delete the appointment?";
+const statusString = "Deleting";
+const errorMessage = "Could not delete appointment";
 
 storiesOf("Appointment", module)
   .addParameters({
@@ -158,4 +162,8 @@ storiesOf("Appointment", module)
       onConfirm={action("onConfirm")}
       onCancel={action("onCancel")}
     />
+  ))
+  .add("Status Deleting", () => <Status message={statusString} />)
+  .add("Error Message", () => (
+    <Error message={errorMessage} onClose={action("onClose")} />
   ));
