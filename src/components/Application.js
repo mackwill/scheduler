@@ -1,26 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointments from "components/Appointment";
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
 
 const appointments = [
   {
@@ -60,13 +43,22 @@ const appointments = [
 export default function Application(props) {
   // Set the state to default to Monday
   const [currentDay, setDay] = useState("Monday");
+  const [days, setDays] = useState([]);
+
+  // Request to /api/days and update the state of days using the
+  // data from the axios get request
+  useEffect(() => {
+    axios.get("/api/days").then((res) => {
+      setDays(res.data);
+    });
+  }, []); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
 
   return (
     <main className="layout">
       <section className="sidebar">
         <img
           className="sidebar--centered"
-          src="images/logo.png"
+          src="../images/logo.png"
           alt="Interview Scheduler"
         />
         <hr className="sidebar__separator sidebar--centered" />
@@ -75,7 +67,7 @@ export default function Application(props) {
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
-          src="images/lhl.png"
+          src="../images/lhl.png"
           alt="Lighthouse Labs"
         />
       </section>
