@@ -17,7 +17,7 @@ import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
-
+import Form from "components/Appointment/Form";
 storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
@@ -166,4 +166,20 @@ storiesOf("Appointment", module)
   .add("Status Deleting", () => <Status message={statusString} />)
   .add("Error Message", () => (
     <Error message={errorMessage} onClose={action("onClose")} />
+  ))
+  .add("Form edit", () => (
+    <Form
+      student={student}
+      interviewers={interviewers}
+      value={3}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />
+  ))
+  .add("Form Create", () => (
+    <Form
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />
   ));
