@@ -9,7 +9,7 @@ export default function InterviewerListItem(props) {
   });
 
   return (
-    <li className={intClass} id={props.id} onClick={props.setInterviewer}>
+    <li className={intClass} id={props.id} onClick={props.onChange}>
       <img
         className="interviewers__item-image"
         src={props.avatar}
