@@ -28,7 +28,9 @@ export default function Index(props) {
           interviewer={props.interview.interviewer.name}
         />
       )}
-      {mode === CREATE && <Form onCancel={back} interviewers={[]} />}
+      {mode === CREATE && (
+        <Form onCancel={back} interviewers={props.interviewers} />
+      )}
     </article>
   );
 }
