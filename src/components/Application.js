@@ -52,9 +52,30 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment,
     };
-    console.log("bookinterview", appointments);
 
     return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+      setState((prev) => ({
+        ...prev,
+        appointments,
+      }));
+    });
+  };
+
+  // Function to cancel an interview
+  const cancelInterview = (id) => {
+    // Get the current appointment and set the interview to null
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+
+    // Update the appointments array with the new appointment
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
       setState((prev) => ({
         ...prev,
         appointments,
@@ -73,6 +94,7 @@ export default function Application(props) {
           interview={interview}
           interviewers={interviewersForDay}
           bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
         />
       );
     }

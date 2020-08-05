@@ -13,6 +13,7 @@ const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETING = "DELETING";
 
 export default function Index(props) {
   console.log("props: ", props);
@@ -31,6 +32,15 @@ export default function Index(props) {
     });
   };
 
+  // Take in the current appointment ID and pass it to cancelInterview
+  // then transition to the empty mode
+  const deleteAppt = () => {
+    transition(DELETING);
+    Promise.resolve(props.cancelInterview(props.id)).then(() => {
+      transition(EMPTY);
+    });
+  };
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -40,12 +50,14 @@ export default function Index(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
+          onDelete={deleteAppt}
         />
       )}
       {mode === CREATE && (
         <Form onSave={save} onCancel={back} interviewers={props.interviewers} />
       )}
       {mode === SAVING && <Status message={"Saving"} />}
+      {mode === DELETING && <Status message={"Deleting"} />}
     </article>
   );
 }
