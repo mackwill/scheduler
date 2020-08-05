@@ -6,6 +6,7 @@ import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Form from "components/Appointment/Form";
 import Status from "components/Appointment/Status";
+import Confirm from "components/Appointment/Confirm";
 
 import "components/Appointment/styles.scss";
 
@@ -14,6 +15,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
 
 export default function Index(props) {
   console.log("props: ", props);
@@ -50,7 +52,7 @@ export default function Index(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
-          onDelete={deleteAppt}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       {mode === CREATE && (
@@ -58,6 +60,13 @@ export default function Index(props) {
       )}
       {mode === SAVING && <Status message={"Saving"} />}
       {mode === DELETING && <Status message={"Deleting"} />}
+      {mode === CONFIRM && (
+        <Confirm
+          onConfirm={deleteAppt}
+          onCancel={back}
+          message={"Are you sure you want to delete?"}
+        />
+      )}
     </article>
   );
 }
