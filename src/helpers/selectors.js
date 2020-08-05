@@ -1,4 +1,4 @@
-export function getAppointmentsForDay(state, day) {
+export const getAppointmentsForDay = function (state, day) {
   const matchingDays = state.days.filter((elem) => {
     return elem.name === day;
   });
@@ -7,7 +7,22 @@ export function getAppointmentsForDay(state, day) {
     return matchingDays;
   }
 
-  return matchingDays[0].appointments.map((appt) => {
+  const newAppts = matchingDays[0].appointments.map((appt) => {
     return state.appointments[appt];
   });
-}
+
+  return newAppts;
+};
+
+export const getInterview = (state, interview) => {
+  if (interview === null) {
+    return null;
+  }
+
+  const { days, appointments, interviewers } = state;
+
+  return {
+    student: interview.student,
+    interviewer: interviewers[interview.interviewer],
+  };
+};

@@ -8,7 +8,7 @@ import "components/Appointment/styles.scss";
 
 export default function index(props) {
   // const { student, interviewer } = { ...props.interview };
-  // console.log("props.interview", props.interview);
+  console.log("props.interview", props);
   return (
     <article className="appointment">
       <Header time={props.time} />
