@@ -42,3 +42,20 @@ export const getInterviewersForDay = function (state, day) {
 
   return interviewerList;
 };
+
+export const findDayByName = (days, day) => {
+  const dayObj = days.filter((elem) => {
+    return elem.name === day;
+  });
+  return dayObj;
+};
+
+export const updateDaysArray = (days, day, newDay) => {
+  const newDaysArr = days.map((elem) => {
+    if (elem.name === day) {
+      return newDay;
+    }
+    return elem;
+  });
+  return newDaysArr;
+};

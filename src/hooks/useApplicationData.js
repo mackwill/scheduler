@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { findDayByName, updateDaysArray } from "helpers/selectors";
 
 export default function useApplicationData() {
   const [state, setState] = useState({
@@ -7,6 +8,7 @@ export default function useApplicationData() {
     days: [],
     appointments: {},
     interviewers: {},
+    spots: 0,
   });
 
   // Set the state for the day and days
@@ -23,6 +25,7 @@ export default function useApplicationData() {
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data,
+        spots: findDayByName(all[0].data, state.day)[0].spots,
       }));
     });
   }, []); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
@@ -40,10 +43,23 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
+    // Get the current day object
+    const currentDay = findDayByName(state.days, state.day)[0];
+
+    // Update the spots key in the array
+    const day = {
+      ...currentDay,
+      spots: (state.spots -= 1),
+    };
+
+    // Update the days array with the new day object
+    const days = updateDaysArray(state.days, state.day, day);
+
     return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
       setState((prev) => ({
         ...prev,
         appointments,
+        days,
       }));
     });
   };
@@ -62,10 +78,23 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
+    // Get the current day object
+    const currentDay = findDayByName(state.days, state.day)[0];
+
+    // Update the spots key in the array
+    const day = {
+      ...currentDay,
+      spots: (state.spots += 1),
+    };
+
+    // Update the days array with the new day object
+    const days = updateDaysArray(state.days, state.day, day);
+
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
       setState((prev) => ({
         ...prev,
         appointments,
+        days,
       }));
     });
   };
