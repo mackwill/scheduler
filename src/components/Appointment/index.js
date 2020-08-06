@@ -16,9 +16,10 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
 
 export default function Index(props) {
-  console.log("props: ", props);
+  console.log("props: ", props.interview);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -43,6 +44,11 @@ export default function Index(props) {
     });
   };
 
+  // Edit currently selected appointment
+  const edit = () => {
+    transition(EDIT);
+  };
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -53,6 +59,7 @@ export default function Index(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer.name}
           onDelete={() => transition(CONFIRM)}
+          onEdit={edit}
         />
       )}
       {mode === CREATE && (
@@ -65,6 +72,15 @@ export default function Index(props) {
           onConfirm={deleteAppt}
           onCancel={back}
           message={"Are you sure you want to delete?"}
+        />
+      )}
+      {mode === EDIT && (
+        <Form
+          onSave={save}
+          onCancel={back}
+          value={props.interview.interviewer.id}
+          student={props.interview.student}
+          interviewers={props.interviewers}
         />
       )}
     </article>
