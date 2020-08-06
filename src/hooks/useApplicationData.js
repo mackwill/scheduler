@@ -7,6 +7,8 @@ export default function useApplicationData() {
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
 
+  // Personal note, put the data manipulation within the actions here because the benefit of
+  // using the reducer is that its always guarenteed to receive the latest state
   const reducer = (state, action) => {
     switch (action.type) {
       case SET_DAY: {
@@ -16,7 +18,6 @@ export default function useApplicationData() {
         return { ...state, ...action.value };
       }
       case SET_INTERVIEW: {
-        console.log("action-value", action.value);
         return { ...state, ...action.value };
       }
       default:
@@ -55,6 +56,21 @@ export default function useApplicationData() {
     });
   }, []); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
 
+  // useEffect(() => {
+  //   const webSocket = new WebSocket("ws://localhost:8001/");
+
+  //   webSocket.onopen = (e) => {
+  //     webSocket.send("ping");
+  //   };
+
+  //   webSocket.onmessage = (e) => {
+  //     const response = JSON.parse(e.data);
+
+  //     if (response.type === SET_INTERVIEW) {
+  //       console.log("this set interview worked");
+  //     }
+  //   };
+  // }, []);
   const bookInterview = (id, interview) => {
     // Create the appointment object
     const appointment = {
@@ -74,13 +90,22 @@ export default function useApplicationData() {
     // Update the spots key in the array
     const day = {
       ...currentDay,
-      spots: (state.spots -= 1),
+      spots: state.appointments[id].interview
+        ? state.spots
+        : (state.spots -= 1),
     };
 
     // Update the days array with the new day object
     const days = updateDaysArray(state.days, state.day, day);
 
     return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+      if (
+        !appointment.interview.student ||
+        !appointment.interview.interviewer
+      ) {
+        throw new Error();
+      }
+
       dispatch({
         type: SET_INTERVIEW,
         value: {
