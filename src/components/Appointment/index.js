@@ -22,7 +22,6 @@ const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Index(props) {
-  console.log("props: ", props.interview);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -40,7 +39,6 @@ export default function Index(props) {
         // True needs to be passed to transition here because an error has been encountered
         // and the previous mode state of 'saving' needs to be deleted for the user to be
         // able to go back to the form
-        console.log("here");
         transition(ERROR_SAVE, true);
       });
   };
