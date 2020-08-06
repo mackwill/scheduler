@@ -3,14 +3,6 @@ import axios from "axios";
 import { findDayByName, updateDaysArray } from "helpers/selectors";
 
 export default function useApplicationData() {
-  // const [state, setState] = useState({
-  //   day: "Monday",
-  //   days: [],
-  //   appointments: {},
-  //   interviewers: {},
-  //   spots: 0,
-  // });
-
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
@@ -43,7 +35,6 @@ export default function useApplicationData() {
   });
 
   // Set the state for the day and days
-  // const setDay = (day) => setState({ ...state, day });
   const setDay = (day) => dispatch({ type: SET_DAY, value: day });
 
   useEffect(() => {
@@ -52,13 +43,6 @@ export default function useApplicationData() {
       Promise.resolve(axios.get("/api/appointments")),
       Promise.resolve(axios.get("/api/interviewers")),
     ]).then((all) => {
-      // setState((prev) => ({
-      //   ...prev,
-      //   days: all[0].data,
-      //   appointments: all[1].data,
-      //   interviewers: all[2].data,
-      //   spots: findDayByName(all[0].data, state.day)[0].spots,
-      // }));
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {
@@ -97,11 +81,6 @@ export default function useApplicationData() {
     const days = updateDaysArray(state.days, state.day, day);
 
     return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
-      // setState((prev) => ({
-      //   ...prev,
-      //   appointments,
-      //   days,
-      // }));
       dispatch({
         type: SET_INTERVIEW,
         value: {
@@ -139,11 +118,6 @@ export default function useApplicationData() {
     const days = updateDaysArray(state.days, state.day, day);
 
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
-      // setState((prev) => ({
-      //   ...prev,
-      //   appointments,
-      //   days,
-      // }));
       dispatch({
         type: SET_INTERVIEW,
         value: {
