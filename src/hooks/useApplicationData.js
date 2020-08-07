@@ -86,49 +86,58 @@ export default function useApplicationData() {
     });
   }, []); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
 
-  // useEffect(() => {
-  //   const webSocket = new WebSocket("ws://localhost:8001/");
+  useEffect(() => {
+    const webSocket = new WebSocket("ws://localhost:8001/");
 
-  //   webSocket.onopen = (e) => {
-  //     webSocket.send("ping");
-  //   };
+    webSocket.onopen = (e) => {
+      webSocket.send("ping");
+    };
 
-  //   webSocket.onmessage = (e) => {
-  //     const response = JSON.parse(e.data);
+    webSocket.onmessage = (e) => {
+      const response = JSON.parse(e.data);
+      console.log("response", response);
 
-  //     if (response.type === SET_INTERVIEW) {
-  //       console.log("this set interview worked");
-  //     }
-  //   };
-  // }, []);
+      if (response.type === SET_INTERVIEW) {
+        console.log("this set interview worked");
+        dispatch({
+          type: SET_INTERVIEW,
+          value: {
+            interview: response.interview,
+            id: response.id,
+          },
+        });
+      }
+    };
+  }, []);
   const bookInterview = (id, interview) => {
     return axios.put(`/api/appointments/${id}`, { interview }).then((res) => {
-      console.log("res: ", res);
+      //   console.log("res: ", res);
       if (!interview.student || !interview.interviewer) {
         throw new Error();
       }
 
-      dispatch({
-        type: SET_INTERVIEW,
-        value: {
-          interview,
-          id,
-        },
-      });
+      //   dispatch({
+      //     type: SET_INTERVIEW,
+      //     value: {
+      //       interview,
+      //       id,
+      //     },
+      //   });
     });
   };
 
   // Function to cancel an interview
   const cancelInterview = (id, interview = null) => {
-    return axios.delete(`/api/appointments/${id}`, { interview }).then(() => {
-      dispatch({
-        type: SET_INTERVIEW,
-        value: {
-          interview,
-          id,
-        },
-      });
-    });
+    return axios.delete(`/api/appointments/${id}`, { interview });
+    // .then(() => {
+    //   dispatch({
+    //     type: SET_INTERVIEW,
+    //     value: {
+    //       interview,
+    //       id,
+    //     },
+    //   });
+    // });
   };
 
   return { state, setDay, bookInterview, cancelInterview };
