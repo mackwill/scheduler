@@ -1,32 +1,62 @@
 import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
-import { findDayByName, updateDaysArray } from "helpers/selectors";
+import { findDayByName, updateDaysArray, checkSpots } from "helpers/selectors";
+
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
+
+// Personal note, put the data manipulation within the actions here because the benefit of
+// using the reducer is that its always guarenteed to receive the latest state
+const reducer = (state, action) => {
+  switch (action.type) {
+    case SET_DAY: {
+      return { ...state, day: action.value };
+    }
+    case SET_APPLICATION_DATA: {
+      return { ...state, ...action.value };
+    }
+    case SET_INTERVIEW: {
+      const { interview, id } = action.value;
+
+      const appointment = {
+        ...state.appointments[id],
+        interview: interview ? { ...interview } : null,
+      };
+
+      // Add appointment object to appointments object
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment,
+      };
+
+      // Get the current day object
+      const currentDay = findDayByName(state.days, state.day)[0];
+
+      // Check for edit on Appointment
+
+      const takenSpots = checkSpots(currentDay.appointments, appointments);
+      const remainingSpots = currentDay.appointments.length - takenSpots;
+
+      // Update the spots key in the array
+      const day = {
+        ...currentDay,
+        spots: remainingSpots,
+      };
+
+      // Update the days array with the new day object
+      const days = updateDaysArray(state.days, state.day, day);
+
+      return { ...state, appointments, days };
+    }
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      );
+  }
+};
 
 export default function useApplicationData() {
-  const SET_DAY = "SET_DAY";
-  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-  const SET_INTERVIEW = "SET_INTERVIEW";
-
-  // Personal note, put the data manipulation within the actions here because the benefit of
-  // using the reducer is that its always guarenteed to receive the latest state
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case SET_DAY: {
-        return { ...state, day: action.value };
-      }
-      case SET_APPLICATION_DATA: {
-        return { ...state, ...action.value };
-      }
-      case SET_INTERVIEW: {
-        return { ...state, ...action.value };
-      }
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        );
-    }
-  };
-
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
@@ -72,82 +102,30 @@ export default function useApplicationData() {
   //   };
   // }, []);
   const bookInterview = (id, interview) => {
-    // Create the appointment object
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview },
-    };
-
-    // Add appointment object to appointments object
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
-    // Get the current day object
-    const currentDay = findDayByName(state.days, state.day)[0];
-
-    // Update the spots key in the array
-    const day = {
-      ...currentDay,
-      spots: state.appointments[id].interview
-        ? state.spots
-        : (state.spots -= 1),
-    };
-
-    // Update the days array with the new day object
-    const days = updateDaysArray(state.days, state.day, day);
-
-    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
-      if (
-        !appointment.interview.student ||
-        !appointment.interview.interviewer
-      ) {
+    return axios.put(`/api/appointments/${id}`, { interview }).then((res) => {
+      console.log("res: ", res);
+      if (!interview.student || !interview.interviewer) {
         throw new Error();
       }
 
       dispatch({
         type: SET_INTERVIEW,
         value: {
-          appointments,
-          days,
+          interview,
+          id,
         },
       });
     });
   };
 
   // Function to cancel an interview
-  const cancelInterview = (id) => {
-    // Get the current appointment and set the interview to null
-    const appointment = {
-      ...state.appointments[id],
-      interview: null,
-    };
-
-    // Update the appointments array with the new appointment
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
-    // Get the current day object
-    const currentDay = findDayByName(state.days, state.day)[0];
-
-    // Update the spots key in the array
-    const day = {
-      ...currentDay,
-      spots: (state.spots += 1),
-    };
-
-    // Update the days array with the new day object
-    const days = updateDaysArray(state.days, state.day, day);
-
-    return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
+  const cancelInterview = (id, interview = null) => {
+    return axios.delete(`/api/appointments/${id}`, { interview }).then(() => {
       dispatch({
         type: SET_INTERVIEW,
         value: {
-          appointments,
-          days,
+          interview,
+          id,
         },
       });
     });

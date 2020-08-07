@@ -59,3 +59,10 @@ export const updateDaysArray = (days, day, newDay) => {
   });
   return newDaysArr;
 };
+
+export const checkSpots = (currentDayAppts, appointments) => {
+  const takenSpots = currentDayAppts.filter((elem) => {
+    return appointments[elem].interview !== null;
+  });
+  return takenSpots.length;
+};
