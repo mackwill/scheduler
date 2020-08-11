@@ -1,23 +1,46 @@
 # Interview Scheduler
 
-## Setup
+The interview scheduler is an app created using the React framework that allows a user to book, edit and delete an interview.
+An interview can be booked on a selected day of the week (Monday through Friday), for a selected time slot, and with a selected interviewer.
+The side menu bar advises users how many open spots are remaining for each of the days of the week.
 
-Install dependencies with `npm install`.
+### Final Product
 
-## Running Webpack Development Server
+!["Screenshot of appointments page"]
+!["Screenshot of creating appointment"]
+!["Screenshot of status pending"]
+!["Screenshot of mobile mode"]
 
-```sh
-npm start
-```
+## Dependencies
 
-## Running Jest Test Framework
+- axios: 0.19.2,
+- classnames: 2.2.6,
+- heroku: 7.42.6,
+- node-sass: 4.14.1,
+- normalize.css: 8.0.1,
+- react: 16.9.0,
+- react-dom: 16.9.0,
+- react-hooks-testing-library: 0.6.0,
+- react-scripts: 3.0.0,
+- react-test-renderer: 16.13.1,
+- sass: 1.26.10
 
-```sh
-npm test
-```
+## Getting Started
 
-## Running Storybook Visual Testbed
+- Install all dependencies using `npm install` command
+- Clone the scheduler-api from https://github.com/lighthouse-labs/scheduler-api and run the development server from the scheduler-api root folder using `npm start`
+- On a separate terminal, run development build using `npm start` from project root folder
 
-```sh
-npm run storybook
-```
+## Current Functionality
+
+- Users can book, edit and delete appointments
+- Error handling to require users to input name/select an interviewer when booking an appointment
+- Status indicator to show that the request is in the process of being made (Saving, Deleting)
+- Pipeline management using CircleCI
+- Production deployment using Netlify: https://kind-hypatia-ff41b6.netlify.app/
+
+## Further Development
+
+- Expand scope of the appointments to entire calendar year
+  - Ability to select specific week of the year, side menu bar reflects the actual day numbers
+- User authenticaion features
