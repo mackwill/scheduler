@@ -27,6 +27,10 @@ jest.mock("axios");
 describe("Application", () => {
   afterEach(cleanup);
 
+  it("render", () => {
+    render(<Application />);
+  });
+
   it.skip("defaults to Monday and changes the schedule when a new day is selected", async () => {
     const { container } = render(<Application />);
 
