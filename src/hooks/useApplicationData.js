@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { findDayByName, updateDaysArray, checkSpots } from "helpers/selectors";
 // import axios from "__mock__/axios";
@@ -85,7 +85,7 @@ export default function useApplicationData() {
         },
       });
     });
-  }, []); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
+  }); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
 
   useEffect(() => {
     const webSocket = new WebSocket("ws://localhost:8001/");
@@ -116,29 +116,12 @@ export default function useApplicationData() {
       if (!interview.student || !interview.interviewer) {
         throw new Error();
       }
-
-      //   dispatch({
-      //     type: SET_INTERVIEW,
-      //     value: {
-      //       interview,
-      //       id,
-      //     },
-      //   });
     });
   };
 
   // Function to cancel an interview
   const cancelInterview = (id, interview = null) => {
     return axios.delete(`/api/appointments/${id}`, { interview });
-    // .then(() => {
-    //   dispatch({
-    //     type: SET_INTERVIEW,
-    //     value: {
-    //       interview,
-    //       id,
-    //     },
-    //   });
-    // });
   };
 
   return { state, setDay, bookInterview, cancelInterview };

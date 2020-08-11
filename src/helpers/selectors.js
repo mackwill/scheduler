@@ -19,7 +19,7 @@ export const getInterview = (state, interview) => {
     return null;
   }
 
-  const { days, appointments, interviewers } = state;
+  const { interviewers } = state;
 
   return {
     student: interview.student,

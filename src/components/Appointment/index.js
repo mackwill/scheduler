@@ -33,7 +33,7 @@ export default function Index(props) {
     if (mode === SHOW && !props.interview) {
       transition(EMPTY);
     }
-  }, [props.interview]);
+  }, [props.interview, mode, transition]);
 
   const save = (name, interviewer) => {
     const interview = {
@@ -61,11 +61,6 @@ export default function Index(props) {
       .then(() => transition(EMPTY))
       .catch((err) => transition(ERROR_DELETE, true));
   };
-
-  // Edit currently selected appointment
-  // const edit = () => {
-  //   transition(EDIT);
-  // };
 
   return (
     <article className="appointment" data-testid="appointment">
