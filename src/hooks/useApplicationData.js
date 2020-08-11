@@ -1,6 +1,7 @@
 import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import { findDayByName, updateDaysArray, checkSpots } from "helpers/selectors";
+// import axios from "__mock__/axios";
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";

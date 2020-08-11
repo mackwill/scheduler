@@ -1,10 +1,12 @@
-import React from "react";
+// import React from "react";
 
-import { render } from "@testing-library/react";
-import Appointments from "components/Appointment";
+// import { render, waitForElement } from "@testing-library/react";
+// import Appointments from "components/Appointment";
 
-describe("Appointment", () => {
-  it("renders without crashing", () => {
-    render(<Appointments />);
-  });
-});
+// describe("Appointment", () => {
+//   // it("defaults to Monday and changes the schedule when a new day is selected", () => {
+//   //   const { getByText } = render(<Appointments />);
+
+//   //   return waitForElement(() => getByText("Monday"));
+//   // });
+// });
