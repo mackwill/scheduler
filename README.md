@@ -6,10 +6,10 @@ The side menu bar advises users how many open spots are remaining for each of th
 
 ### Final Product
 
-!["Screenshot of appointments page"]
-!["Screenshot of creating appointment"]
-!["Screenshot of status pending"]
-!["Screenshot of mobile mode"]
+!["Screenshot of appointments page"](https://github.com/mackwill/scheduler/blob/master/docs/appointments_view.png)
+!["Screenshot of creating appointment"](https://github.com/mackwill/scheduler/blob/master/docs/book_appointment.png)
+!["Screenshot of delete appointment"](https://github.com/mackwill/scheduler/blob/master/docs/delete_appointment.png)
+!["Screenshot of mobile mode"](https://github.com/mackwill/scheduler/blob/master/docs/mobile.png)
 
 ## Dependencies
 
