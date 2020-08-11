@@ -69,6 +69,7 @@ export default function useApplicationData() {
   // Set the state for the day and days
   const setDay = (day) => dispatch({ type: SET_DAY, value: day });
 
+  // Make requests to get data from database for days, appointments and interviewers
   useEffect(() => {
     Promise.all([
       Promise.resolve(axios.get("/api/days")),
@@ -85,21 +86,16 @@ export default function useApplicationData() {
         },
       });
     });
-  }); //An empty array is passed as a dependancy to avoid an infinite loop of the request beign made since there is no real dependancy
+  });
 
+  // Setting up WebSocket connection and passing response to reducer
   useEffect(() => {
     const webSocket = new WebSocket("ws://localhost:8001/");
 
-    webSocket.onopen = (e) => {
-      webSocket.send("ping");
-    };
-
     webSocket.onmessage = (e) => {
       const response = JSON.parse(e.data);
-      console.log("response", response);
 
       if (response.type === SET_INTERVIEW) {
-        console.log("this set interview worked");
         dispatch({
           type: SET_INTERVIEW,
           value: {
@@ -110,9 +106,10 @@ export default function useApplicationData() {
       }
     };
   }, []);
+
+  // Get the data from the form and send data to server
   const bookInterview = (id, interview) => {
     return axios.put(`/api/appointments/${id}`, { interview }).then((res) => {
-      //   console.log("res: ", res);
       if (!interview.student || !interview.interviewer) {
         throw new Error();
       }

@@ -1,3 +1,4 @@
+// Returns a list of all of the appointments for the selected day
 export const getAppointmentsForDay = function (state, day) {
   const matchingDays = state.days.filter((elem) => {
     return elem.name === day;
@@ -14,6 +15,7 @@ export const getAppointmentsForDay = function (state, day) {
   return newAppts;
 };
 
+// Get and return the information from the selected interview
 export const getInterview = (state, interview) => {
   if (interview === null) {
     return null;
@@ -27,6 +29,7 @@ export const getInterview = (state, interview) => {
   };
 };
 
+// Returns a list of all of the interviews booked on the selected day
 export const getInterviewersForDay = function (state, day) {
   const matchingDays = state.days.filter((elem) => {
     return elem.name === day;
@@ -43,6 +46,7 @@ export const getInterviewersForDay = function (state, day) {
   return interviewerList;
 };
 
+// Returns the day object of the selected day
 export const findDayByName = (days, day) => {
   const dayObj = days.filter((elem) => {
     return elem.name === day;
@@ -50,6 +54,7 @@ export const findDayByName = (days, day) => {
   return dayObj;
 };
 
+// Takes in the udpdated day object and returns the updated days array
 export const updateDaysArray = (days, day, newDay) => {
   const newDaysArr = days.map((elem) => {
     if (elem.name === day) {
@@ -60,6 +65,7 @@ export const updateDaysArray = (days, day, newDay) => {
   return newDaysArr;
 };
 
+// Counts and returns the number of appointments that are not null (number of open spots)
 export const checkSpots = (currentDayAppts, appointments) => {
   const takenSpots = currentDayAppts.filter((elem) => {
     return appointments[elem].interview !== null;

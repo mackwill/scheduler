@@ -26,6 +26,7 @@ export default function Index(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // For use with web sockets, transitions to show or empty  if the state  of the interview/transition or mode has changed
   useEffect(() => {
     if (mode === EMPTY && props.interview) {
       transition(SHOW);
@@ -66,6 +67,7 @@ export default function Index(props) {
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
 
+      {/* Check the current mode that the appointment is in and transition accordingly */}
       {mode === EMPTY && <Empty onAdd={(e) => transition(CREATE)} />}
       {mode === SHOW && props.interview && (
         <Show

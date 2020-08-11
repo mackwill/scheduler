@@ -88,7 +88,6 @@ describe("Application", () => {
       target: { value: "Nicolas" },
     });
     fireEvent.click(getByText(appointment, "Save"));
-    console.log(debug());
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
   });
 

@@ -37,7 +37,6 @@ export default {
         statusText: "No Content",
       });
     }
-    console.log("appts", fixtures.appointments["1"]);
   }),
   delete: jest.fn((url) => {
     if (url === `api/apppointments/:id`) {

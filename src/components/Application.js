@@ -19,6 +19,8 @@ export default function Application(props) {
     cancelInterview,
   } = useApplicationData();
 
+  // Gets all of the appointments for the selected day, all of the booked interviews
+  // for the selected day, and then renders the Appointment components accordingly
   const newAppts = getAppointmentsForDay(state, state.day).map(
     (appointment) => {
       const interview = getInterview(state, appointment.interview);
